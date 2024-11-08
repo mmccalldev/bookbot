@@ -7,24 +7,21 @@ def main():
     print_report(word_count, char_dict, book_path)
 
 def file_path():
-    try:
-        book_path = input('Please input the file path or file name of a text within the "books/" directory: ')
-        if 'books/' in book_path:
-            with open(book_path):
-                return book_path
-        elif 'books/' not in book_path:
+    while True:
+        try:
+            book_path = input('Please input the file path or file name of a text within the "books/" directory: ')
+            if 'books/' in book_path:
+                with open(book_path):
+                    return book_path
             appended_path = 'books/' + book_path
             with open(appended_path):
                 return appended_path
-        else:
+        except KeyboardInterrupt:
+                print("\nProgram interrupted by user.")
+                exit()
+        except FileNotFoundError:
             print('Sorry that is an invalid file path, please input the file path again: ')
-            return file_path()
-    except KeyboardInterrupt:
-            print("\nProgram interrupted by user.")
-            exit()
-    except FileNotFoundError:
-        print('Sorry that is an invalid file path, please input the file path again: ')
-        return file_path()
+            continue
 
 def get_word_count(text):
     words = text.split()
@@ -86,7 +83,7 @@ def print_report(word_count, char_dict, book_path):
     print(f"--- Begin Report of {book_path} ---")
 
     #print word count
-    print(f"There are {word_count} words in the provided text.")
+    print(f"There are {word_count} words in the provided text.\n")
 
     #get sorted list of character counts
     sorted_chars = sort_dict(char_dict)
